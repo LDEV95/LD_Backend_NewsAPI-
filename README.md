@@ -1,3 +1,7 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+You will need two environment files:
+
+.env.development - Containing environment variables for the development database.
+
+.env.test - Containing environment variables for the testing database.
