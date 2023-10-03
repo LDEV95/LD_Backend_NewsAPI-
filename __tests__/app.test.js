@@ -22,8 +22,27 @@ describe("GET api/topics", () => {
       .expect(404)
       .end((err, res) => {
         if (err) return done(err);
-        console.log(err);
         done();
+      });
+  });
+  test("Expect length of topics array to be greater than one", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.topics.length).toBeGreaterThan(1);
+      });
+  });
+  test("Topics array has slug and description properties", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then((response) => {
+        const topicsArray = response.body.topics;
+        topicsArray.forEach((element) => {
+          expect(element.hasOwnProperty("slug")).toBe(true);
+          expect(element.hasOwnProperty("description")).toBe(true);
+        });
       });
   });
 });
