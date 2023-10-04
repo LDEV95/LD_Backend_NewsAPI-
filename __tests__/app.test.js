@@ -75,3 +75,32 @@ describe("GET /api/", () => {
       });
   });
 });
+
+// task 4
+
+describe("GET /api/articles/:article_id", () => {
+  test("returns 200 status code", () => {
+    return request(app).get("/api/articles/1").expect(200);
+  });
+  test("Non-Existent ID, should return 404", () => {
+    return request(app).get("/api/articles/999999").expect(404);
+  });
+
+  test("Has the expected properties and values", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.articles.hasOwnProperty("author")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("article_img_url")).toBe(
+          true
+        );
+        expect(response.body.articles.hasOwnProperty("title")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("article_id")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("body")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("topic")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("created_at")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("votes")).toBe(true);
+      });
+  });
+});

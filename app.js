@@ -1,11 +1,19 @@
 const express = require("express");
-const app = express();
-const { sendTopics } = require("./controllers/NCNEWS.controllers");
-app.get("/api/topics", sendTopics);
-const endpointsData = require("./endpoints.json");
 
-app.get("/api/", (req, res) => {
+const { sendTopics } = require("./controllers/NCNEWS.controllers");
+const endpointsData = require("./endpoints.json");
+const { getArticles } = require("./controllers/ARTICLES.controllers");
+
+const app = express();
+
+// task 3 .json connection
+app.get("/api", (req, res) => {
   res.status(200).json(endpointsData);
 });
+
+app.get("/api/topics", sendTopics);
+app.get("/api/articles/:article_id", getArticles);
+
+// app.uses < error handling middlewear // need to get familiar with this
 
 module.exports = app;
