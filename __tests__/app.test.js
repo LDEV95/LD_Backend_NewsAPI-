@@ -92,32 +92,120 @@ describe("GET /api/articles/:article_id", () => {
         expect(message).toBe("ID not found!");
       });
   });
+
+  test("Non-Numerical ID, should return 400 bad path", () => {
+    return request(app)
+      .get("/api/articles/banana")
+      .expect(400)
+      .expect((response) => {
+        const { message } = response.body;
+        expect(message).toBe("Bad path! ID must be a number");
+      });
+  });
+
+  test("Has the expected properties and values", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.articles.hasOwnProperty("author")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("article_img_url")).toBe(
+          true
+        );
+        expect(response.body.articles.hasOwnProperty("title")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("article_id")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("body")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("topic")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("created_at")).toBe(true);
+        expect(response.body.articles.hasOwnProperty("votes")).toBe(true);
+      });
+  });
 });
 
-test("Non-Numerical ID, should return 400 bad path", () => {
-  return request(app)
-    .get("/api/articles/banana")
-    .expect(400)
-    .expect((response) => {
-      const { message } = response.body;
-      expect(message).toBe("Bad path! ID must be a number");
-    });
+//task 5
+// 200 status code
+describe("GET /api/articles/", () => {
+  test("returns 200 status code", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        console.log(response.body.articles);
+      });
+  });
+
+  test("Handles non-existent endpoint with 404", () => {
+    return request(app)
+      .get("/api/artixsdfdf")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Not Found");
+      });
+  });
+
+  test("Checking response is an array", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body.articles)).toBe(true);
+      });
+  });
+
+  test("Each article object has required properties", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        const articlesArray = response.body.articles;
+        articlesArray.forEach((article) => {
+          expect(article.hasOwnProperty("author")).toBe(true);
+          expect(article.hasOwnProperty("title")).toBe(true);
+          expect(article.hasOwnProperty("article_id")).toBe(true);
+          expect(article.hasOwnProperty("topic")).toBe(true);
+          expect(article.hasOwnProperty("created_at")).toBe(true);
+          expect(article.hasOwnProperty("votes")).toBe(true);
+          expect(article.hasOwnProperty("article_img_url")).toBe(true);
+          expect(article.hasOwnProperty("comment_count")).toBe(true);
+        });
+      });
+  });
+  test("Has the expected properties and values", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        const articlesArray = response.body.articles;
+        const isDescending = articlesArray.every((article, index) => {
+          return (
+            // checking if current article being loopedover is the last one in the array if it is, returns true
+            index === articlesArray.length - 1 ||
+            article.created_at >= articlesArray[index + 1].created_at
+          );
+        });
+        expect(isDescending).toBe(true); // each is in decending order
+      });
+  });
+  test("Has the expected properties and values", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        const articlesArray = response.body.articles;
+        const hasNoBody = articlesArray.every((article) => {
+          return !article.hasNoBody;
+        });
+        expect(hasNoBody).toBe(true);
+      });
+  });
 });
 
-test("Has the expected properties and values", () => {
-  return request(app)
-    .get("/api/articles/1")
-    .expect(200)
-    .then((response) => {
-      expect(response.body.articles.hasOwnProperty("author")).toBe(true);
-      expect(response.body.articles.hasOwnProperty("article_img_url")).toBe(
-        true
-      );
-      expect(response.body.articles.hasOwnProperty("title")).toBe(true);
-      expect(response.body.articles.hasOwnProperty("article_id")).toBe(true);
-      expect(response.body.articles.hasOwnProperty("body")).toBe(true);
-      expect(response.body.articles.hasOwnProperty("topic")).toBe(true);
-      expect(response.body.articles.hasOwnProperty("created_at")).toBe(true);
-      expect(response.body.articles.hasOwnProperty("votes")).toBe(true);
-    });
-});
+// gets all articles?
+
+// response with articles array with correct properties
+
+// articles sorted by date in descending order
+
+// should not be a body property present
+
+// don't forget to add a description of this endpoint
