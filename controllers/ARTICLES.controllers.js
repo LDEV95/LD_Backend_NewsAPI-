@@ -11,8 +11,7 @@ exports.getArticles = (req, res, next) => {
         res.status(404).json({ message: error.message });
       } else if (error.status === 400) {
         res.status(400).json({ message: error.message });
-      } else {
-        next(error); // goes to next error handling middlewear
       }
+      next(error); // goes to next error handling middlewear
     });
 };
