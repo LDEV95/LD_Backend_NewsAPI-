@@ -129,9 +129,7 @@ describe("GET /api/articles/", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
-      .then((response) => {
-        console.log(response.body.articles);
-      });
+      .then((response) => {});
   });
 
   test("Handles non-existent endpoint with 404", () => {
@@ -186,26 +184,16 @@ describe("GET /api/articles/", () => {
         expect(isDescending).toBe(true); // each is in decending order
       });
   });
-  test("Has the expected properties and values", () => {
-    return request(app)
-      .get("/api/articles")
-      .expect(200)
-      .then((response) => {
-        const articlesArray = response.body.articles;
-        const hasNoBody = articlesArray.every((article) => {
-          return !article.hasNoBody;
-        });
-        expect(hasNoBody).toBe(true);
-      });
+  test("Returns object without body property", async () => {
+    const response = await request(app).get("/api/articles").expect(200);
+
+    const articlesArray = response.body.articles;
+
+    // Check if every article does not have the 'body' property
+    const hasNoBody = articlesArray.every((article) => {
+      return !article.hasOwnProperty("body");
+    });
+
+    expect(hasNoBody).toBe(true);
   });
 });
-
-// gets all articles?
-
-// response with articles array with correct properties
-
-// articles sorted by date in descending order
-
-// should not be a body property present
-
-// don't forget to add a description of this endpoint
