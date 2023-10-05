@@ -168,7 +168,7 @@ describe("GET /api/articles/", () => {
         });
       });
   });
-  test("Has the expected properties and values", () => {
+  test("Checking that the articles are ordered by date", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -195,5 +195,67 @@ describe("GET /api/articles/", () => {
     });
 
     expect(hasNoBody).toBe(true);
+  });
+});
+
+//task 6
+describe("GET /api/articles/:article_id/comments", () => {
+  test("returns 200 status code", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((response) => {});
+  });
+  test("Non-Existent ID, should return 404", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(404)
+      .expect((response) => {
+        const { message } = response.body;
+        expect(message).toBe("Not found");
+      });
+  });
+  test("Non-Numerical ID, should return 400 bad path", () => {
+    return request(app)
+      .get("/api/articles/bannaa/comments")
+      .expect(400)
+      .expect((response) => {
+        const { message } = response.body;
+        expect(message).toBe("Bad path! ID must be a number");
+      });
+  });
+
+  test("Each comment object has required properties", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((response) => {
+        const commentsArray = response.body;
+        commentsArray.forEach((comment) => {
+          expect(comment.hasOwnProperty("comment_id")).toBe(true);
+          expect(comment.hasOwnProperty("votes")).toBe(true);
+          expect(comment.hasOwnProperty("created_at")).toBe(true);
+          expect(comment.hasOwnProperty("author")).toBe(true);
+          expect(comment.hasOwnProperty("created_at")).toBe(true);
+          expect(comment.hasOwnProperty("body")).toBe(true);
+          expect(comment.hasOwnProperty("article_id")).toBe(true);
+        });
+      });
+  });
+  test("Checking that the comments are ordered by date", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then((response) => {
+        const commentsArray = response.body;
+        const isDescending = commentsArray.every((comment, index) => {
+          return (
+            // checking if current comment being loopedover is the last one in the array if it is, returns true
+            index === commentsArray.length - 1 ||
+            comment.created_at >= commentsArray[index + 1].created_at
+          );
+        });
+        expect(isDescending).toBe(true); // each is in decending order
+      });
   });
 });
