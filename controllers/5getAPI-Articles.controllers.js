@@ -9,9 +9,4 @@ exports.getALLArticles = (req, res) => {
 
     res.json({ articles: noBodyArticles });
   });
-  /*
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: "Internal Server Error" });
-    });*/ // dont need to use this as app.use handles it
 };
