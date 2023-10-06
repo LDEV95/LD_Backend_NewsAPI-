@@ -10,6 +10,7 @@ exports.getAllByArticleId = (req, res, next) => {
         // Throw a specific error for non-existent IDs
         throw { status: 404, message: "Not found" };
       }
+
       res.status(200).json(comments);
     })
     .catch((error) => {

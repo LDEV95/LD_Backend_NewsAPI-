@@ -1,6 +1,7 @@
 const db = require("../db/connection");
 
 exports.getAllByArticleId = (article_id) => {
+  // only seems to work with regex not checking typeof (maybe because a string is returned rather than number)
   if (!article_id.match(/^\d+$/)) {
     // ^ If the ID is not a valid number
     return Promise.reject({
