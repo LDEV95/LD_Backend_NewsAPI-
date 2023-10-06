@@ -17,6 +17,9 @@ const {
 // 7
 const { insertComment } = require("./controllers/7POSTarticles-ID.controllers");
 
+// 10
+const { sendUsers } = require("./controllers/10-get-api-users.controllers");
+
 const app = express();
 
 app.use(express.json());
@@ -30,6 +33,7 @@ app.get("/api/topics", sendTopics);
 app.get("/api/articles/:article_id", getArticles);
 app.get("/api/articles", getALLArticles);
 app.get("/api/articles/:article_id/comments", getAllByArticleId);
+app.get("/api/users", sendUsers);
 
 app.post("/api/articles/:article_id/comments", insertComment);
 

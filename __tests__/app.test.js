@@ -280,3 +280,32 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+//10
+
+describe("GET api/users", () => {
+  test("Returns 200 status code", () => {
+    return request(app).get("/api/users").expect(200);
+  });
+  test("Expect length of users array to be greater than one", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.users.length).toBeGreaterThan(1);
+      });
+  });
+  test("Each user object has following properties: username, name, avatar_url", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        const usersArray = response.body.users;
+        usersArray.forEach((element) => {
+          expect(element.hasOwnProperty("username")).toBe(true);
+          expect(element.hasOwnProperty("name")).toBe(true);
+          expect(element.hasOwnProperty("avatar_url")).toBe(true);
+        });
+      });
+  });
+});
