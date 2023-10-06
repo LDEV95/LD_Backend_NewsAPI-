@@ -201,10 +201,7 @@ describe("GET /api/articles/", () => {
 //task 6
 describe("GET /api/articles/:article_id/comments", () => {
   test("returns 200 status code", () => {
-    return request(app)
-      .get("/api/articles/1/comments")
-      .expect(200)
-      .then((response) => {});
+    return request(app).get("/api/articles/1/comments").expect(200);
   });
   test("Non-Existent ID, should return 404", () => {
     return request(app)
@@ -232,13 +229,21 @@ describe("GET /api/articles/:article_id/comments", () => {
       .then((response) => {
         const commentsArray = response.body;
         commentsArray.forEach((comment) => {
+          // checking if has property
           expect(comment.hasOwnProperty("comment_id")).toBe(true);
           expect(comment.hasOwnProperty("votes")).toBe(true);
           expect(comment.hasOwnProperty("created_at")).toBe(true);
           expect(comment.hasOwnProperty("author")).toBe(true);
-          expect(comment.hasOwnProperty("created_at")).toBe(true);
           expect(comment.hasOwnProperty("body")).toBe(true);
           expect(comment.hasOwnProperty("article_id")).toBe(true);
+
+          // checking if datatype of property is right
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+          expect(typeof comment.article_id).toBe("number");
         });
       });
   });
@@ -256,6 +261,22 @@ describe("GET /api/articles/:article_id/comments", () => {
           );
         });
         expect(isDescending).toBe(true); // each is in decending order
+      });
+  });
+});
+// 7
+describe("POST /api/articles/:article_id/comments", () => {
+  test("returns 201 status code and the posted comment", () => {
+    const comment = {
+      username: "icellusedkars",
+      body: "A truly inspiring article",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(comment)
+      .expect(201)
+      .then((response) => {
+        console.log(response);
       });
   });
 });
