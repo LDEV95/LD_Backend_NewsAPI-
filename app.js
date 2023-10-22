@@ -1,51 +1,40 @@
+// LEFT TO DO ON SUNDAY / BEFORE - SET MORE TESTS UP, TIDY EVERYTHING UP, ADD EACH ENDPOINT TO THE README
+
 const express = require("express");
-
-// 2
+const {
+  Errors,
+  PSQLErrors,
+} = require("./errorHandlers/errorHandling.errors.controllers");
 const { sendTopics } = require("./controllers/NCNEWS.controllers");
-// 3
 const endpointsData = require("./endpoints.json");
-// 4
-const { getArticles } = require("./controllers/ARTICLES.controllers");
-// 5
-const {
-  getALLArticles,
-} = require("./controllers/5getAPI-Articles.controllers");
-// 6
-const {
-  getAllByArticleId,
-} = require("./controllers/6getarticles-idcomments.controllers");
-// 7
-const { insertComment } = require("./controllers/7POSTarticles-ID.controllers");
-
-// 10
 const { sendUsers } = require("./controllers/10-get-api-users.controllers");
+const {
+  getArticles,
+  getArticlesByID,
+  getArticleCommentsById,
+  insertComment,
+  incVotes,
+} = require("./controllers/Articlescontrollers");
+const { delComments } = require("./controllers/Comments.controllers");
 
 const app = express();
 
 app.use(express.json());
 
-// task 3 .json connection
 app.get("/api", (req, res) => {
   res.status(200).json(endpointsData);
 });
 
 app.get("/api/topics", sendTopics);
-app.get("/api/articles/:article_id", getArticles);
-app.get("/api/articles", getALLArticles);
-app.get("/api/articles/:article_id/comments", getAllByArticleId);
+app.get("/api/articles/:article_id", getArticlesByID);
+app.get("/api/articles", getArticles);
+app.get("/api/articles/:article_id/comments", getArticleCommentsById);
 app.get("/api/users", sendUsers);
-
 app.post("/api/articles/:article_id/comments", insertComment);
+app.patch("/api/articles/:article_id", incVotes);
+app.delete("/api/comments/:comment_id", delComments);
 
-// error hadnling middlewear
-app.all("/*", (req, res, next) => {
-  console.log("hello");
-  res.status(404).json({ error: "Not Found" });
-});
-
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send({ msg: "server error" });
-});
+app.use(Errors);
+app.use(PSQLErrors);
 
 module.exports = app;
