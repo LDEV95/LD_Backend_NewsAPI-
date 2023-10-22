@@ -1,4 +1,4 @@
-const { getUsers } = require("../model/10-get-api-users.models");
+const { getUsers } = require("../model/Users.models");
 
 exports.sendUsers = (req, res) => {
   getUsers().then((users) => {

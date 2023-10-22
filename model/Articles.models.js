@@ -72,7 +72,6 @@ exports.postComment = (username, body, article_id) => {
       [username, body, article_id]
     )
     .then((result) => {
-      console.log(result);
       return result.rows[0];
     });
 };

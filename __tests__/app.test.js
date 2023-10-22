@@ -381,7 +381,6 @@ describe("GET api/users", () => {
       .expect(200)
       .then((response) => {
         const usersArray = response.body.users;
-        console.log(usersArray);
         usersArray.forEach((element) => {
           expect(element.hasOwnProperty("username")).toBe(true);
           expect(element.hasOwnProperty("name")).toBe(true);

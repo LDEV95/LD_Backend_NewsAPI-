@@ -5,9 +5,9 @@ const {
   Errors,
   PSQLErrors,
 } = require("./errorHandlers/errorHandling.errors.controllers");
-const { sendTopics } = require("./controllers/NCNEWS.controllers");
+const { sendTopics } = require("./controllers/Topics.controllers");
 const endpointsData = require("./endpoints.json");
-const { sendUsers } = require("./controllers/10-get-api-users.controllers");
+const { sendUsers } = require("./controllers/Users.controllers");
 const {
   getArticles,
   getArticlesByID,
