@@ -1,6 +1,9 @@
 // LEFT TO DO ON SUNDAY / BEFORE - SET MORE TESTS UP, TIDY EVERYTHING UP, ADD EACH ENDPOINT TO THE README
 
 const express = require("express");
+const app = express();
+const cors = require("cors");
+app.use(cors());
 const {
   Errors,
   PSQLErrors,
@@ -16,8 +19,6 @@ const {
   incVotes,
 } = require("./controllers/Articlescontrollers");
 const { delComments } = require("./controllers/Comments.controllers");
-
-const app = express();
 
 app.use(express.json());
 
