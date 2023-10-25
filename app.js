@@ -1,5 +1,3 @@
-// LEFT TO DO ON SUNDAY / BEFORE - SET MORE TESTS UP, TIDY EVERYTHING UP, ADD EACH ENDPOINT TO THE README
-
 const express = require("express");
 const app = express();
 const cors = require("cors");

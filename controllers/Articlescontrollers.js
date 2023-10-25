@@ -51,6 +51,7 @@ exports.incVotes = (req, res, next) => {
   const article_id = req.params.article_id;
 
   const voteToAdd = req.body.inc_votes;
+  console.log(voteToAdd);
 
   patchComment(voteToAdd, article_id).then((result) => {
     res.status(201).json(result);

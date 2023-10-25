@@ -144,6 +144,7 @@ test("Each article object has required properties", () => {
     .expect(200)
     .then((response) => {
       const articlesArray = response.body.articles;
+
       articlesArray.forEach((article) => {
         expect(article.hasOwnProperty("author")).toBe(true);
         expect(article.hasOwnProperty("title")).toBe(true);
