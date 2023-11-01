@@ -3,12 +3,12 @@ const {
   GetArticlesById,
   GetArticleComments,
   postComment,
-  patchComment,
+  patchVote,
 } = require("../model/Articles.models");
 
 exports.getArticles = (req, res, next) => {
-  const { topic } = req.query;
-  GetAllArticles(topic)
+  const { sort_by, order, topic } = req.query;
+  GetAllArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
@@ -49,11 +49,9 @@ exports.insertComment = (req, res, next) => {
 };
 exports.incVotes = (req, res, next) => {
   const article_id = req.params.article_id;
-
   const voteToAdd = req.body.inc_votes;
-  console.log(voteToAdd);
 
-  patchComment(voteToAdd, article_id).then((result) => {
-    res.status(201).json(result);
+  patchVote(voteToAdd, article_id).then((result) => {
+    res.status(201).send(result);
   });
 };

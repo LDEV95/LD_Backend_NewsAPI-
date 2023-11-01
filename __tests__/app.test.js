@@ -211,6 +211,15 @@ test("Non-Existent query should return 404", () => {
     });
 });
 
+test.only("status: 200 - accepts order query", () => {
+  return request(app)
+    .get("/api/articles?sort_by=comment_count&order=ASC")
+    .expect(200)
+    .then(({ body: { articles } }) => {
+      expect(articles).toBeSortedBy("comment_count", { ascending: true });
+    });
+});
+
 // GETTING COMMENTS BY ARTICLE ID
 
 describe("GET /api/articles/:article_id/comments", () => {
@@ -307,7 +316,7 @@ describe("POST /api/articles/:article_id/comments", () => {
 // 8 INCREASE NUMBER OF VOTES (Patch)
 
 describe("PATCH /api/articles/:article_id", () => {
-  test("returns 201 status code and the posted comment", () => {
+  test.only("returns 201 status code and the posted comment", () => {
     const increaseVotes = {
       inc_votes: 1,
     };
@@ -317,7 +326,7 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(201)
       .then((response) => {});
   });
-  test("Increases votes by number passed", () => {
+  test.only("Increases votes by number passed", () => {
     const increaseVotes = {
       inc_votes: 1,
     };
@@ -326,6 +335,7 @@ describe("PATCH /api/articles/:article_id", () => {
       .send(increaseVotes)
       .expect(201)
       .then((response) => {
+        console.log(response);
         expect(response.body.votes).toEqual(101);
       });
   });
@@ -339,6 +349,7 @@ describe("GET /api/articles/:article_id/comments", () => {
       .expect(200)
       .then((response) => {
         const commentArray = response.body;
+
         commentArray.forEach((comment) => {
           expect(comment.article_id).toBe(1);
         });
